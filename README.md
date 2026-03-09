@@ -2,16 +2,16 @@
 
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 
-## 📋 Description
+## Description
 
 Projet de recherche biomédicale sur la **modélisation numérique 2D des échanges gazeux dans les poumons**. Ce projet implémente des simulations de diffusion et convection pulmonaire en utilisant des méthodes numériques avancées (différences finies, Crank-Nicolson) pour résoudre des équations aux dérivées partielles.
 
 **Période** : Novembre 2024 – Janvier 2025  
 **Encadrement** : M. Marcel Filoche
 
-> 📖 **Pour les détails physiques et scientifiques complets de cette modélisation**, consultez le [rapport technique](docs/rapport_Biomedical_Groupe01.pdf).
+> **Pour les détails physiques et scientifiques complets de cette modélisation**, consultez le [rapport technique](docs/rapport_Biomedical_Groupe01.pdf).
 
-## 📁 Structure du Projet
+## Structure du Projet
 
 ```
 biomed/
@@ -24,18 +24,18 @@ biomed/
 │   └── guide_utilisation.pdf             # Guide d'utilisation PDF
 │
 ├── diffusion/                       # Module de diffusion
-│   ├── diffusion_sans_def.py       # ✅ Cas simple - Validation analytique
-│   ├── diffusion_avec_def.py       # 🎨 Interface graphique - Géométries complexes
-│   └── diffusion_temporel.py       # 🎬 Évolution temporelle - Animation
+│   ├── diffusion_sans_def.py       #  Cas simple - Validation analytique
+│   ├── diffusion_avec_def.py       #  Interface graphique - Géométries complexes
+│   └── diffusion_temporel.py       #  Évolution temporelle - Animation
 │
 └── convection/                      # Module de convection
     ├── convection_sans_def.py      # Cas simple
-    ├── convection_sans_def_2.py    # ✅ Validation Poiseuille complète
+    ├── convection_sans_def_2.py    # Validation Poiseuille complète
     ├── convection_avec_def.py      # Écoulement avec obstacles
-    └── convection_temporel.py      # 🎬 Évolution temporelle - Animation
+    └── convection_temporel.py      #  Évolution temporelle - Animation
 ```
 
-## 🚀 Installation
+##  Installation
 
 ### Prérequis
 - Python 3.8 ou supérieur
@@ -52,7 +52,7 @@ cd pulmonary-gas-exchange
 pip install -r requirements.txt
 ```
 
-## 💻 Utilisation
+## Utilisation
 
 ### Module Diffusion
 
@@ -88,7 +88,7 @@ python diffusion/diffusion_temporel.py
 
 ### Module Convection
 
-#### 1. Cas Simple (`convection_sans_def_2.py`) ⭐ Recommandé
+#### 1. Cas Simple (`convection_sans_def_2.py`) Recommandé
 
 Validation complète avec solution de Poiseuille.
 
@@ -122,7 +122,7 @@ Pour les détails physiques, scientifiques et mathématiques complets de cette m
 - **[Rapport Technique Complet](docs/rapport_Biomedical_Groupe01.pdf)** : Contexte biomédical, formulation mathématique, méthodes numériques, validation et analyses
 - **[Guide d'Utilisation PDF](docs/guide_utilisation.pdf)** : Instructions détaillées
 
-## 🛠️ Technologies Utilisées
+## Technologies Utilisées
 
 - **Python 3.8+**
 - **NumPy** : Calcul numérique et algèbre linéaire
@@ -130,21 +130,21 @@ Pour les détails physiques, scientifiques et mathématiques complets de cette m
 - **Matplotlib** : Visualisation 2D/3D et animations
 - **Tkinter** : Interface graphique (inclus avec Python)
 
-## ⚙️ Dépannage
+## Dépannage
 
 ### Problèmes Courants
 
-**❌ Erreur : "Matrix is singular"**
+** Erreur : "Matrix is singular"**
 - Vérifier que le domaine est connexe
 - Ajouter au moins un point de condition de Dirichlet
 - Réduire la taille du maillage
 
-**❌ Animation ne se sauvegarde pas**
+** Animation ne se sauvegarde pas**
 ```bash
 pip install pillow
 ```
 
-**❌ "tkinter not found"**
+** "tkinter not found"**
 ```bash
 # Ubuntu/Debian
 sudo apt-get install python3-tk
@@ -152,14 +152,14 @@ sudo apt-get install python3-tk
 # Windows : Réinstaller Python avec option "tcl/tk and IDLE"
 ```
 
-## 🤝 Contribution
+## Contribution
 
 Les contributions sont les bienvenues ! N'hésitez pas à :
 - Signaler des bugs
 - Proposer des améliorations
 - Ajouter de nouvelles fonctionnalités
 
-## 👤 Auteur
+## Auteur
 
 **Auteur** : Groupe 1 (dont moi : Mohamed MOHSSINE)
 **Encadrant** : M. Marcel Filoche  
