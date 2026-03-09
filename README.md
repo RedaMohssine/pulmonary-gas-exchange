@@ -167,6 +167,4 @@ Les contributions sont les bienvenues ! N'hésitez pas à :
 
 ---
 
-**Note** : Ce projet a été développé dans un cadre académique. Le code fonctionne tel quel et a été validé numériquement.
-
 ⭐ Si ce projet vous a été utile, n'hésitez pas à lui donner une étoile sur GitHub !
