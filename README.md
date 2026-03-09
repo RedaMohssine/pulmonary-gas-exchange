@@ -166,5 +166,3 @@ Les contributions sont les bienvenues ! N'hésitez pas à :
 **Période** : Novembre 2024 – Janvier 2025
 
 ---
-
-⭐ Si ce projet vous a été utile, n'hésitez pas à lui donner une étoile sur GitHub !
