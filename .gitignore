@@ -162,3 +162,5 @@ convection/temporel/
 *.npy
 *.npz
 *.pkl
+!docs/images/*.png
+!docs/images/*.gif
