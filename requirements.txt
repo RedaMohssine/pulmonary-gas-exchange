@@ -1,5 +1,4 @@
-matplotlib
 numpy
-tk
 scipy
+matplotlib
 pillow
