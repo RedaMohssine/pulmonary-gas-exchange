@@ -1,168 +1,75 @@
-# Modélisation Numérique des Échanges Gazeux Pulmonaires
+# Pulmonary gas exchange: 2D diffusion and convection models
 
-[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
+Finite-difference simulations of oxygen transport in the lung: diffusion in a 2D section of an acinus and air convection in a 2D channel, in steady state and over time, on simple and deformed geometries.
 
-## Description
+## Context
 
-Projet de recherche biomédicale sur la **modélisation numérique 2D des échanges gazeux dans les poumons**. Ce projet implémente des simulations de diffusion et convection pulmonaire en utilisant des méthodes numériques avancées (différences finies, Crank-Nicolson) pour résoudre des équations aux dérivées partielles.
+- Biomedical engineering project at EMINES (UM6P), November 2024 to January 2025, supervised by Marcel Filoche.
+- Team of eight students (Group 1). The full report (in French) is in [docs/rapport_Biomedical_Groupe01.pdf](docs/rapport_Biomedical_Groupe01.pdf), with a short user guide in [docs/guide_utilisation.pdf](docs/guide_utilisation.pdf).
 
-**Période** : Novembre 2024 – Janvier 2025  
-**Encadrement** : M. Marcel Filoche
+## What was done
 
-> **Pour les détails physiques et scientifiques complets de cette modélisation**, consultez le [rapport technique](docs/rapport_Biomedical_Groupe01.pdf).
+- **Steady diffusion**: the domain is discretized on a regular grid, the diffusion equation and the boundary conditions (Dirichlet at the inlet, Robin condition ∂C/∂n = −C/Λ on the exchange surface, Neumann elsewhere) are written as a sparse linear system and solved with SciPy.
+- **Deformed geometries**: a Tkinter interface to draw obstacles (rectangle, ellipse, polygon) and choose the boundary conditions before running the diffusion solver.
+- **Time-dependent diffusion**: Crank-Nicolson scheme (Δt = 1/144 s), animated until the steady state is reached.
+- **Convection**: velocity and pressure fields of a flow driven by a pressure difference, in a straight channel, around obstacles, and over time (explicit Euler in time).
+- **Validation**: diffusion compared with the analytical 1D solution, convection compared with the Poiseuille profile and flow rate.
 
-## Structure du Projet
+## Results
 
-```
-biomed/
-├── README.md                         # Documentation complète
-├── requirements.txt                  # Dépendances Python
-├── .gitignore                       # Fichiers à ignorer par Git
-│
-├── docs/                            # Documentation
-│   ├── rapport_Biomedical_Groupe01.pdf   # Rapport technique complet
-│   └── guide_utilisation.pdf             # Guide d'utilisation PDF
-│
-├── diffusion/                       # Module de diffusion
-│   ├── diffusion_sans_def.py       #  Cas simple - Validation analytique
-│   ├── diffusion_avec_def.py       #  Interface graphique - Géométries complexes
-│   └── diffusion_temporel.py       #  Évolution temporelle - Animation
-│
-└── convection/                      # Module de convection
-    ├── convection_sans_def.py      # Cas simple
-    ├── convection_sans_def_2.py    # Validation Poiseuille complète
-    ├── convection_avec_def.py      # Écoulement avec obstacles
-    └── convection_temporel.py      #  Évolution temporelle - Animation
-```
+Numbers printed by the scripts when run as provided:
 
-##  Installation
+- Diffusion (`diffusion_sans_def.py`): the numerical concentration matches the analytical solution with a relative error around 1e-12 %, and the inflow equals the outflow (1.243e-4 ml/s).
+- Convection (`convection_sans_def_2.py`, 150 × 150 grid): relative L2 error on the velocity Ux of 1.2e-7 against Poiseuille, and relative error on the flow rate of 4.5e-5.
 
-### Prérequis
-- Python 3.8 ou supérieur
-- pip
+| Diffusion vs analytical solution | Convection vs Poiseuille profile |
+|:---:|:---:|
+| ![Diffusion validation](docs/figures/diffusion_analytical_validation.png) | ![Poiseuille profile](docs/figures/convection_poiseuille_profile.png) |
 
-### Installation des dépendances
+## Running it
+
+Requirements: Python 3.8+ with Tkinter (included in the standard Windows and macOS installers; on Ubuntu: `sudo apt install python3-tk`).
 
 ```bash
-# Cloner le dépôt
-git clone https://github.com/[votre-username]/pulmonary-gas-exchange.git
+git clone https://github.com/RedaMohssine/pulmonary-gas-exchange.git
 cd pulmonary-gas-exchange
-
-# Installer les dépendances
 pip install -r requirements.txt
 ```
 
-## Utilisation
-
-### Module Diffusion
-
-#### 1. Cas Simple avec Validation (`diffusion_sans_def.py`)
-
-Simulation de référence avec validation analytique.
+Each script runs on its own and opens matplotlib windows:
 
 ```bash
-python diffusion/diffusion_sans_def.py
+python diffusion/diffusion_sans_def.py       # steady diffusion + analytical validation
+python diffusion/diffusion_avec_def.py       # Tkinter interface to draw a deformed domain
+python diffusion/diffusion_temporel.py       # time evolution (Crank-Nicolson), saves a GIF
+
+python convection/convection_sans_def_2.py   # channel flow + Poiseuille validation
+python convection/convection_avec_def.py     # flow around obstacles
+python convection/convection_temporel.py     # time evolution, saves a GIF
 ```
 
-**Résultats** : Carte de concentration, champ de flux, comparaison numérique vs analytique, calcul du débit.
+For `convection_avec_def.py`, the deformation is set by the `Deff` function in the script (see the user guide).
 
-#### 2. Géométries Complexes (`diffusion_avec_def.py`)
+## Repository structure
 
-Interface graphique pour créer des géométries personnalisées avec obstacles.
-
-```bash
-python diffusion/diffusion_avec_def.py
+```
+diffusion/
+  diffusion_sans_def.py     steady diffusion, rectangular domain, analytical validation
+  diffusion_avec_def.py     steady diffusion on a domain drawn in a Tkinter window
+  diffusion_temporel.py     transient diffusion (Crank-Nicolson) and animation
+convection/
+  convection_sans_def.py    channel flow, first version
+  convection_sans_def_2.py  channel flow with Poiseuille validation
+  convection_avec_def.py    flow with obstacles
+  convection_temporel.py    transient flow and animation
+docs/
+  rapport_Biomedical_Groupe01.pdf   full report (French)
+  guide_utilisation.pdf             user guide (French)
+  figures/                          figures generated by the scripts
 ```
 
-**Utilisation** : Choisir une forme (Rectangle/Ellipse/Polygone) → Ajuster dimensions → Placer → Définir conditions limites → Lancer simulation.
+## Limitations
 
-#### 3. Évolution Temporelle (`diffusion_temporel.py`)
-
-Animation de la diffusion au cours du temps.
-
-```bash
-python diffusion/diffusion_temporel.py
-```
-
-**Fonctionnalités** : Animation temps réel, export GIF, convergence vers état stationnaire.
-
-### Module Convection
-
-#### 1. Cas Simple (`convection_sans_def_2.py`) Recommandé
-
-Validation complète avec solution de Poiseuille.
-
-```bash
-python convection/convection_sans_def_2.py
-```
-
-**Résultats** : Champs de vitesse et pression, validation Poiseuille, analyse des résidus, calcul du débit.
-
-#### 2. Écoulement avec Obstacles (`convection_avec_def.py`)
-
-Simulation autour d'obstacles sphériques.
-
-```bash
-python convection/convection_avec_def.py
-```
-
-#### 3. Évolution Temporelle (`convection_temporel.py`)
-
-Animation de l'évolution de l'écoulement.
-
-```bash
-python convection/convection_temporel.py
-```
-
-**Fonctionnalités** : Animation double (pression + vitesse), export GIF, évolution du débit.
-
-## 📚 Documentation Complète
-
-Pour les détails physiques, scientifiques et mathématiques complets de cette modélisation :
-- **[Rapport Technique Complet](docs/rapport_Biomedical_Groupe01.pdf)** : Contexte biomédical, formulation mathématique, méthodes numériques, validation et analyses
-- **[Guide d'Utilisation PDF](docs/guide_utilisation.pdf)** : Instructions détaillées
-
-## Technologies Utilisées
-
-- **Python 3.8+**
-- **NumPy** : Calcul numérique et algèbre linéaire
-- **SciPy** : Résolution de systèmes linéaires creux
-- **Matplotlib** : Visualisation 2D/3D et animations
-- **Tkinter** : Interface graphique (inclus avec Python)
-
-## Dépannage
-
-### Problèmes Courants
-
-** Erreur : "Matrix is singular"**
-- Vérifier que le domaine est connexe
-- Ajouter au moins un point de condition de Dirichlet
-- Réduire la taille du maillage
-
-** Animation ne se sauvegarde pas**
-```bash
-pip install pillow
-```
-
-** "tkinter not found"**
-```bash
-# Ubuntu/Debian
-sudo apt-get install python3-tk
-
-# Windows : Réinstaller Python avec option "tcl/tk and IDLE"
-```
-
-## Contribution
-
-Les contributions sont les bienvenues ! N'hésitez pas à :
-- Signaler des bugs
-- Proposer des améliorations
-- Ajouter de nouvelles fonctionnalités
-
-## Auteur
-
-**Auteur** : Groupe 1 (dont moi : Mohamed MOHSSINE)
-**Encadrant** : M. Marcel Filoche  
-**Période** : Novembre 2024 – Janvier 2025
-
----
+- The models are 2D and use simplified geometries; a real acinus is 3D and branched.
+- The convection model is a Stokes-type flow at low Reynolds number; inertia and the coupling between convection and diffusion are not modelled.
+- Grid sizes are set in the scripts (for example `N = 150`); finer grids make the sparse systems slow to build because the matrices are assembled point by point in Python.
